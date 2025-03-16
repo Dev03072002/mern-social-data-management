@@ -1,0 +1,21 @@
+.form-label {
+    display: block;
+    color: #0d47a1; /* Dark blue */
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  
+  .input-field {
+    width: 100%;
+    border: 1px solid #64b5f6;
+    border-radius: 6px;
+    padding: 8px;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+  
+  .input-field:focus {
+    border-color: #1976d2; 
+    box-shadow: 0 0 4px rgba(25, 118, 210, 0.5);
+  }
+  
