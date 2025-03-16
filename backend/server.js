@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { MongoClient } = require('mongodb');
 const mongoose = require("mongoose");
+const path = require('path');
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -19,13 +20,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // Connect MongoDB
 mongoose.connect(process.env.MONGO_URI, { autoSelectFamily: false })
-    .then(() => console.log("MongoDB Connected"))
-    .catch(err => console.error("MongoDB Connection Error:", err));
+.then(() => console.log("MongoDB Connected"))
+.catch(err => console.error("MongoDB Connection Error:", err));
 
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/family", familyRoutes);
+
+// const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '../frontend/dist')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/dist', 'index.html'));
+});
 
 // Sample API Route
 app.get("/", (req, res) => {
