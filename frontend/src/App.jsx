@@ -10,8 +10,10 @@ import FamilyMemberForm from "./components/FamilyMemberForm";
 import ProtectedRoute from "./components/ProtectedRoutes";
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(null); // Initially `null`
-  const [loading, setLoading] = useState(true); // Track auth check
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -25,7 +27,7 @@ function App() {
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
       try {
-        const response = await axios.get("http://localhost:5000/api/auth/validate");
+        const response = await axios.get(`${API_BASE_URL}/api/auth/validate`);
         if (response.status === 200) {
           setIsLoggedIn(true);
         } else {
@@ -46,7 +48,7 @@ function App() {
 
   const handleLogin = async (userCredentials) => {
     try {
-      const response = await axios.post("http://localhost:5000/api/auth/login", userCredentials);
+      const response = await axios.post(`${API_BASE_URL}/api/auth/login`, userCredentials);
       const { token } = response.data;
 
       localStorage.setItem("authToken", token);

@@ -37,6 +37,8 @@ const UserForm = () => {
         helpDarjiSamaj: "",
     });
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const handleChange = (e) => {
         const { name, value, type } = e.target;
         if (type === "file") {
@@ -54,7 +56,7 @@ const UserForm = () => {
                 formDataToSend.append(key, formData[key]);
             });
 
-            const response = await axios.post("http://localhost:5000/api/users/register", formDataToSend, {
+            const response = await axios.post(`${API_BASE_URL}/api/users/register`, formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" },
             });
 
