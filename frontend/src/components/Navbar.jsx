@@ -11,11 +11,15 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
     navigate("/");
   };
 
+  const navigateToHome = () => {
+    navigate(`/home`);
+  };
+
   return (
     <nav className="navbar">
       <div className="navbar-container">
         
-        <div className="navbar-logo">
+        <div className="navbar-logo main-head" onClick={navigateToHome}>
           <img src="/logo.jpg" alt="Logo 1" className="logo main-logo" />
           <h2 className="text-2xl font-bold text-center text-blue-700">Char Gam Darji Samaj</h2>
         </div>

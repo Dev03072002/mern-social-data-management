@@ -2,28 +2,39 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const FamilyMemberForm = () => {
+const MarriedDaughterForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    
     const [formData, setFormData] = useState({
-        relation: "", 
-        name: "", 
-        middleName: "", 
-        surname: "", 
-        sex: "", 
-        birthday: "", 
-        bloodGroup: "", 
-        contactNo: "",
-        maritalStatus: "", 
-        marriageDate:"", 
-        education: "", 
-        occupation: "", 
-        companyName: "", 
-        designation: "",
-        monthlyIncome: "", 
-        passportPhoto: null,
-        helpDarjiSamaj: ""
-    });
+            name: "",
+            middleName: "",
+            surname: "",
+            sex: "",
+            birthday: "",
+            bloodGroup: "",
+            houseNo: "",
+            society: "",
+            landmark: "",
+            area: "",
+            taluka: "",
+            district: "",
+            pincode: "",
+            contactNo: "",
+            whatsappNo: "",
+            maritalStatus: "",
+            marriageDate: "",
+            darjiGod: "",
+            email: "",
+            education: "",
+            occupation: "",
+            companyName: "",
+            designation: "",
+            monthlyIncome: "",
+            passportPhoto: null,
+            aadhaarNo: "",
+            helpDarjiSamaj: "",
+        });
 
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -46,39 +57,22 @@ const FamilyMemberForm = () => {
 
             formDataToSend.append("mainMemberId", id);
 
-            await axios.post(`${API_BASE_URL}/api/family/add-family-member`, formDataToSend, {
+            const response =  await axios.post(`${API_BASE_URL}/api/family/add-daughter-detail`, formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
-            alert("Family member added successfully!");
-
-            setFormData({
-                relation: "", 
-                name: "", 
-                middleName: "", 
-                surname: "", 
-                sex: "", 
-                birthday: "", 
-                bloodGroup: "", 
-                contactNo: "",
-                maritalStatus: "", 
-                marriageDate:"", 
-                education: "", 
-                occupation: "", 
-                companyName: "", 
-                designation: "",
-                monthlyIncome: "", 
-                passportPhoto: null,
-                helpDarjiSamaj: ""
-            });
+            if (response.data.success) {
+                alert("Daughter details added successfully!");
+                navigate(`/add-daughter-family-member/${response.data.userId}`);
+            }
         } catch (error) {
             console.error("Error:", error);
-            alert("Failed to add family member.");
+            alert("Failed to add details.");
         }
     };
 
     const handleNextForm = () => {
-        navigate(`/add-daughter-detail/${id}`);
+        navigate(`/home`);
     };
 
     return (
@@ -88,27 +82,10 @@ const FamilyMemberForm = () => {
                 className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl border border-blue-300"
             >
                 <h2 className="text-2xl font-semibold mb-6 text-center text-blue-700">
-                    Add Family Member Form
+                    Married Daughter Detail Form
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label className="form-label">Relation</label>
-                        <select name="relation" value={formData.relation} onChange={handleChange} className="input-field" required >
-                            <option value="">Select</option>
-                            <option value="wife">Wife</option>
-                            <option value="husband">Husband</option>
-                            <option value="son">Son</option>
-                            <option value="daughter">Daughter</option>
-                            <option value="father">Father</option>
-                            <option value="mother">Mother</option>
-                            <option value="brother">Brother</option>
-                            <option value="sister">Sister</option>
-                            <option value="daughterinlaw">Daughter in law</option>
-                            <option value="grandson">Grand Son</option>
-                            <option value="granddaughter">Grand Daughter</option>
-                        </select>
-                    </div>
 
                     <div>
                         <label className="form-label">First Name</label>
@@ -128,8 +105,6 @@ const FamilyMemberForm = () => {
                     <div>
                         <label className="form-label">Sex</label>
                         <select name="sex" value={formData.sex} onChange={handleChange} className="input-field" required>
-                            <option value="">Select</option>
-                            <option value="male">Male</option>
                             <option value="female">Female</option>
                         </select>
                     </div>
@@ -142,6 +117,36 @@ const FamilyMemberForm = () => {
                     <div>
                         <label className="form-label">Blood Group</label>
                         <input type="text" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">House No.</label>
+                        <input type="text" name="houseNo" onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Society/Faliya Name</label>
+                        <input type="text" name="society" onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Landmark</label>
+                        <input type="text" name="landmark" onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Taluka</label>
+                        <input type="text" name="taluka" onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">District</label>
+                        <input type="text" name="district" onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Pincode</label>
+                        <input type="number" name="pincode" onChange={handleChange} className="input-field" />
                     </div>
 
                     <div>
@@ -159,17 +164,19 @@ const FamilyMemberForm = () => {
                         <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
                             <option value="married">Married</option>
-                            <option value="unmarried">Unmarried</option>
-                            <option value="readyformarriage">Ready for marriage</option>
                             <option value="widow">Widow</option>
                             <option value="divorce">Divorce</option>
-                            <option value="widower">Widower</option>
                         </select>
                     </div>
 
                     <div>
                         <label className="form-label">Date of Marriage</label>
                         <input type="date" name="marriageDate" value={formData.marriageDate} onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Darji God</label>
+                        <input type="date" name="darjiGod" value={formData.darjiGod} onChange={handleChange} className="input-field" />
                     </div>
 
                     <div>
@@ -221,11 +228,11 @@ const FamilyMemberForm = () => {
                     onClick={handleNextForm}
                     className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
                 >
-                    Next Form
+                    Go to Home page
                 </button>
             </form>
         </div>
     );
 };
 
-export default FamilyMemberForm;
+export default MarriedDaughterForm;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const FamilyMemberForm = () => {
+const MarriedDaughterFamilyForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -44,9 +44,9 @@ const FamilyMemberForm = () => {
                 formDataToSend.append(key, formData[key]);
             });
 
-            formDataToSend.append("mainMemberId", id);
+            formDataToSend.append("daughterId", id);
 
-            await axios.post(`${API_BASE_URL}/api/family/add-family-member`, formDataToSend, {
+            await axios.post(`${API_BASE_URL}/api/family/add-daughter-family-member`, formDataToSend, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
 
@@ -78,7 +78,7 @@ const FamilyMemberForm = () => {
     };
 
     const handleNextForm = () => {
-        navigate(`/add-daughter-detail/${id}`);
+        navigate(`/home`);
     };
 
     return (
@@ -88,7 +88,7 @@ const FamilyMemberForm = () => {
                 className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl border border-blue-300"
             >
                 <h2 className="text-2xl font-semibold mb-6 text-center text-blue-700">
-                    Add Family Member Form
+                    Add Daughter Family Member Form
                 </h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -96,15 +96,9 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Relation</label>
                         <select name="relation" value={formData.relation} onChange={handleChange} className="input-field" required >
                             <option value="">Select</option>
-                            <option value="wife">Wife</option>
-                            <option value="husband">Husband</option>
+                            <option value="soninlaw">Son in Law</option>
                             <option value="son">Son</option>
                             <option value="daughter">Daughter</option>
-                            <option value="father">Father</option>
-                            <option value="mother">Mother</option>
-                            <option value="brother">Brother</option>
-                            <option value="sister">Sister</option>
-                            <option value="daughterinlaw">Daughter in law</option>
                             <option value="grandson">Grand Son</option>
                             <option value="granddaughter">Grand Daughter</option>
                         </select>
@@ -221,11 +215,11 @@ const FamilyMemberForm = () => {
                     onClick={handleNextForm}
                     className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
                 >
-                    Next Form
+                    Go to Home Page
                 </button>
             </form>
         </div>
     );
 };
 
-export default FamilyMemberForm;
+export default MarriedDaughterFamilyForm;

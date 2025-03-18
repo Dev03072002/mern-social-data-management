@@ -8,6 +8,8 @@ import UserForm from "./components/UserForm";
 import Navbar from "./components/Navbar";
 import FamilyMemberForm from "./components/FamilyMemberForm";
 import ProtectedRoute from "./components/ProtectedRoutes";
+import MarriedDaughterForm from "./components/MarriedDaughterForm";
+import MarriedDaughterFamilyForm from "./components/MarriedDaughterFamilyForm";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
@@ -77,6 +79,8 @@ function App() {
         <Route path="/home" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Home /></ProtectedRoute>} />
         <Route path="/add-main-family-member" element={<ProtectedRoute isLoggedIn={isLoggedIn}><UserForm /></ProtectedRoute>} />
         <Route path="/add-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn}><FamilyMemberForm /></ProtectedRoute>} />
+        <Route path="/add-daughter-detail/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn}><MarriedDaughterForm /></ProtectedRoute>} />
+        <Route path="/add-daughter-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn}><MarriedDaughterFamilyForm /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

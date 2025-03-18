@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const familyMemberSchema = new mongoose.Schema({
-    mainMemberId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    relation: { type: String, enum: ["wife", "husband", "son", "daughter", "mother", "father", "brother", "sister", "daughter-in-law", "grandson", "granddaughter"], required: true },
+const daughterFamilyMemberSchema = new mongoose.Schema({
+    daughterId: { type: mongoose.Schema.Types.ObjectId, ref: "MarriedDaughter", required: true },
+    relation: { type: String, enum: ["son-in-law", "son", "daughter", "grandson", "granddaughter"], required: true },
     name: String,
     middleName: String,
     surname: String,
@@ -21,4 +21,4 @@ const familyMemberSchema = new mongoose.Schema({
     helpDarjiSamaj: String,
 }, { timestamps: true });
 
-module.exports = mongoose.model("FamilyMember", familyMemberSchema);
+module.exports = mongoose.model("DaughterFamilyMember", daughterFamilyMemberSchema);

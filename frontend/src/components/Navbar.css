@@ -24,6 +24,10 @@
     align-items: center;
 }
 
+.navbar-logo.main-head:hover {
+    cursor: pointer;
+}
+
 .logo {
     height: 40px;
 }

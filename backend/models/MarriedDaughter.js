@@ -1,14 +1,13 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const marriedDaughterSchema = new mongoose.Schema({
+    mainMemberId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     name: String,
     middleName: String,
     surname: String,
     sex: String,
     birthday: Date,
     bloodGroup: String,
-    nativePlace: String,
-    totalMembers: Number,
     address: {
         houseNo: String,
         society: String,
@@ -22,6 +21,7 @@ const userSchema = new mongoose.Schema({
     whatsappNo: String,
     maritalStatus: String,
     marriageDate: Date,
+    darjiGod: String,
     email: String,
     education: String,
     occupation: String,
@@ -29,10 +29,8 @@ const userSchema = new mongoose.Schema({
     designation: String,
     monthlyIncome: Number,
     passportPhoto: String,
-    aadhaarNo: String,
     helpDarjiSamaj: String,
-    familyMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: "FamilyMember" }],
-    marriedDaughters: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarriedDaughter" }],
+    familyMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: "DaughterFamilyMember" }],
 }, { timestamps: true });
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("MarriedDaughter", marriedDaughterSchema);
