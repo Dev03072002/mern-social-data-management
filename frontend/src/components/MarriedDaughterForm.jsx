@@ -63,7 +63,7 @@ const MarriedDaughterForm = () => {
 
             if (response.data.success) {
                 alert("Daughter details added successfully!");
-                navigate(`/add-daughter-family-member/${response.data.userId}`);
+                navigate(`/add-daughter-family-member/${response.data.marriedDaughterId}`);
             }
         } catch (error) {
             console.error("Error:", error);

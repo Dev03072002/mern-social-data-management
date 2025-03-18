@@ -31,7 +31,7 @@ router.post("/add-daughter-detail", upload.single("passportPhoto"), async (req, 
         mainMember.marriedDaughters.push(newMarriedDaughter._id);
         await mainMember.save();
 
-        res.status(201).json({ success: true, message: "Mrried Daughter Details added successfully", marriedDaughter: newMarriedDaughter._id });
+        res.status(201).json({ success: true, message: "Mrried Daughter Details added successfully", marriedDaughterId: newMarriedDaughter._id });
     } catch (error) {
         console.error("Error adding married daughter details:", error);
         res.status(500).json({ success: false, message: "Internal server error" });
