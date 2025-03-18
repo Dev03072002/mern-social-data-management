@@ -8,6 +8,8 @@ const path = require('path');
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const familyRoutes = require("./routes/FamilyMemberRoutes");
+const daughterDetailsRoutes = require("./routes/MarriedDaughterRoutes");
+const daughterFamilyRoutes = require("./routes/MarriedDaughterFamilyMemberRoute");
 
 dotenv.config();
 const app = express();
@@ -26,7 +28,7 @@ mongoose.connect(process.env.MONGO_URI, { autoSelectFamily: false })
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/family", familyRoutes);
+app.use("/api/family", familyRoutes, daughterDetailsRoutes, daughterFamilyRoutes);
 
 // const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, '../frontend/dist')));

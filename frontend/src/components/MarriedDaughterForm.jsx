@@ -176,7 +176,7 @@ const MarriedDaughterForm = () => {
 
                     <div>
                         <label className="form-label">Darji God</label>
-                        <input type="date" name="darjiGod" value={formData.darjiGod} onChange={handleChange} className="input-field" />
+                        <input type="text" name="darjiGod" value={formData.darjiGod} onChange={handleChange} className="input-field" />
                     </div>
 
                     <div>
