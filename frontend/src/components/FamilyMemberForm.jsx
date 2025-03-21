@@ -141,7 +141,17 @@ const FamilyMemberForm = () => {
 
                     <div>
                         <label className="form-label">Blood Group</label>
-                        <input type="text" name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" />
+                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
+                            <option value="">Select</option>
+                            <option value="APos">A+</option>
+                            <option value="ANeg">A-</option>
+                            <option value="BPos">B+</option>
+                            <option value="BNeg">B-</option>
+                            <option value="ABPos">AB+</option>
+                            <option value="ABNeg">AB-</option>
+                            <option value="OPos">O+</option>
+                            <option value="Oneg">O-</option>
+                        </select>
                     </div>
 
                     <div>
@@ -181,8 +191,19 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Occupation</label>
                         <select name="occupation" value={formData.occupation} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="job">Job</option>
                             <option value="business">Business</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="itAndSd">It & Software Development</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="eduAndRes">Education & Research</option>
+                            <option value="govAndPs">Government & Public Services</option>
+                            <option value="legalAndLaw">Legal & Law Enforcement</option>
+                            <option value="saleAndMr">Sales & Marketing</option>
+                            <option value="manuAndTrd">Manufacturing & Trades</option>
+                            <option value="entrepreneur">Entrepreneur</option>
+                            <option value="freelancer">Freelancer</option>
+                            <option value="media">Media - Journalist</option>
                         </select>
                     </div>
 
@@ -197,7 +218,7 @@ const FamilyMemberForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">Monthly Income in Rs.</label>
+                        <label className="form-label">Monthly Income in INR (In Lacs)</label>
                         <input type="number" name="monthlyIncome" value={formData.monthlyIncome} onChange={handleChange} className="input-field" />
                     </div>
 

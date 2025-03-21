@@ -27,4 +27,57 @@ router.post("/register", upload.single("passportPhoto"), async (req, res) => {
     }
 });
 
+// POST route to get all users details
+router.get("/list-main-members", async (req, res) => {
+    try {
+        const users = await User.find({});
+        res.json(users);
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// Get route to fetch single user
+router.get("/:id", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(user);
+    } catch (error) {
+        console.error("Error fetching user:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// Put route to edit a single user
+router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
+    try {
+        let updatedData = { ...req.body };
+        if (req.file) {
+            updatedData.passportPhoto = req.file.buffer.toString("base64");
+        }
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+        if (!updatedUser) return res.status(404).json({ message: "User not found" });
+
+        res.json({ success: true, message: "User updated successfully", user: updatedUser });
+    } catch (error) {
+        console.error("Error updating user:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+// Delete route to delete a single user
+router.delete("/delete/:id", async (req, res) => {
+    try {
+        const deletedUser = await User.findByIdAndDelete(req.params.id);
+        if (!deletedUser) return res.status(404).json({ message: "User not found" });
+
+        res.json({ success: true, message: "User deleted successfully" });
+    } catch (error) {
+        console.error("Error deleting user:", error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
 module.exports = router;
