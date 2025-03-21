@@ -15,9 +15,11 @@ router.post("/add-daughter-family-member", upload.single("passportPhoto"), async
     try {
         const { daughterId, ...familyData } = req.body;
 
+        console.log("Data", familyData);
+
         // Validate if the main member exists
-        const MarriedDaughter = await MarriedDaughter.findById(daughterId);
-        if (!MarriedDaughter) {
+        const daughterDetails = await MarriedDaughter.findById(daughterId);
+        if (!daughterDetails) {
             return res.status(404).json({ success: false, message: "Details not found" });
         }
 
@@ -31,8 +33,8 @@ router.post("/add-daughter-family-member", upload.single("passportPhoto"), async
         await newDaughterFamilyMember.save();
 
         // Add family member reference to the main user
-        MarriedDaughter.familyMembers.push(newDaughterFamilyMember._id);
-        await MarriedDaughter.save();
+        daughterDetails.familyMembers.push(newDaughterFamilyMember._id);
+        await daughterDetails.save();
 
         res.status(201).json({ success: true, message: "Family member added successfully", familyMemberId: newDaughterFamilyMember._id });
     } catch (error) {
