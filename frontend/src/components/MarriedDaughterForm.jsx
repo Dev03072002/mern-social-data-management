@@ -104,7 +104,7 @@ const MarriedDaughterForm = () => {
                     <div>
                         <label className="form-label">Sex</label>
                         <select name="sex" value={formData.sex} onChange={handleChange} className="input-field" required>
-                            <option value="female">Female</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
 
@@ -117,14 +117,14 @@ const MarriedDaughterForm = () => {
                         <label className="form-label">Blood Group</label>
                         <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="APos">A+</option>
-                            <option value="ANeg">A-</option>
-                            <option value="BPos">B+</option>
-                            <option value="BNeg">B-</option>
-                            <option value="ABPos">AB+</option>
-                            <option value="ABNeg">AB-</option>
-                            <option value="OPos">O+</option>
-                            <option value="Oneg">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
                         </select>
                     </div>
 
@@ -172,9 +172,9 @@ const MarriedDaughterForm = () => {
                         <label className="form-label">Maritial Status</label>
                         <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="married">Married</option>
-                            <option value="widow">Widow</option>
-                            <option value="divorce">Divorce</option>
+                            <option value="Married">Married</option>
+                            <option value="Widow">Widow</option>
+                            <option value="Divorce">Divorce</option>
                         </select>
                     </div>
 
@@ -197,19 +197,20 @@ const MarriedDaughterForm = () => {
                         <label className="form-label">Occupation</label>
                         <select name="occupation" value={formData.occupation} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="business">Business</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="finance">Finance</option>
-                            <option value="itAndSd">It & Software Development</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="eduAndRes">Education & Research</option>
-                            <option value="govAndPs">Government & Public Services</option>
-                            <option value="legalAndLaw">Legal & Law Enforcement</option>
-                            <option value="saleAndMr">Sales & Marketing</option>
-                            <option value="manuAndTrd">Manufacturing & Trades</option>
-                            <option value="entrepreneur">Entrepreneur</option>
-                            <option value="freelancer">Freelancer</option>
-                            <option value="media">Media - Journalist</option>
+                            <option value="Business">Business</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="It & Software Development">It & Software Development</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Education & Research">Education & Research</option>
+                            <option value="Government & Public Services">Government & Public Services</option>
+                            <option value="Legal & Law Enforcement">Legal & Law Enforcement</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Manufacturing & Trades">Manufacturing & Trades</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Media - Journalist">Media - Journalist</option>
+                            <option value="House Wife">House Wife</option>
                         </select>
                     </div>
 

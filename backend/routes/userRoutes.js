@@ -13,6 +13,11 @@ router.post("/register", upload.single("passportPhoto"), async (req, res) => {
     try {
         const userData = { ...req.body };
 
+        // Parse the address JSON string back to an object
+        if (req.body.address) {
+            userData.address = JSON.parse(req.body.address);
+        }
+
         // Convert passport photo to Base64 (For simplicity)
         if (req.file) {
             userData.passportPhoto = req.file.buffer.toString("base64");
@@ -53,14 +58,34 @@ router.get("/:id", async (req, res) => {
 // Put route to edit a single user
 router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
     try {
+        // Fetch the existing user first to preserve existing familyMembers
+        const existingUser = await User.findById(req.params.id);
+        if (!existingUser) return res.status(404).json({ message: "User not found" });
+
         let updatedData = { ...req.body };
+
+        // Parse the address JSON string back to an object
+        if (req.body.address) {
+            try {
+                updatedData.address = JSON.parse(req.body.address);
+            } catch (error) {
+                console.error("Invalid JSON format for address:", req.body.address);
+                return res.status(400).json({ success: false, message: "Invalid address format" });
+            }
+        }        
+
+        // Convert passport photo if provided
         if (req.file) {
             updatedData.passportPhoto = req.file.buffer.toString("base64");
         }
-        const updatedUser = await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
-        if (!updatedUser) return res.status(404).json({ message: "User not found" });
 
-        res.json({ success: true, message: "User updated successfully", user: updatedUser });
+        // Preserve existing familyMembers if not explicitly updated
+        updatedData.familyMembers = existingUser.familyMembers;
+        updatedData.marriedDaughters = existingUser.marriedDaughters;
+
+        const updatedUser = await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
+        
+        res.json({ success: true, message: "User updated successfully", userId: updatedUser._id });
     } catch (error) {
         console.error("Error updating user:", error);
         res.status(500).json({ message: "Server Error" });

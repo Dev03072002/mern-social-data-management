@@ -96,17 +96,17 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Relation</label>
                         <select name="relation" value={formData.relation} onChange={handleChange} className="input-field" required >
                             <option value="">Select</option>
-                            <option value="wife">Wife</option>
-                            <option value="husband">Husband</option>
-                            <option value="son">Son</option>
-                            <option value="daughter">Daughter</option>
-                            <option value="father">Father</option>
-                            <option value="mother">Mother</option>
-                            <option value="brother">Brother</option>
-                            <option value="sister">Sister</option>
-                            <option value="daughterinlaw">Daughter in law</option>
-                            <option value="grandson">Grand Son</option>
-                            <option value="granddaughter">Grand Daughter</option>
+                            <option value="Wife">Wife</option>
+                            <option value="Husband">Husband</option>
+                            <option value="Son">Son</option>
+                            <option value="Daughter">Daughter</option>
+                            <option value="Father">Father</option>
+                            <option value="Mother">Mother</option>
+                            <option value="Brother">Brother</option>
+                            <option value="Sister">Sister</option>
+                            <option value="Daughter In Law">Daughter in law</option>
+                            <option value="Grand Son">Grand Son</option>
+                            <option value="Grand Daughter">Grand Daughter</option>
                         </select>
                     </div>
 
@@ -129,8 +129,8 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Sex</label>
                         <select name="sex" value={formData.sex} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
 
@@ -143,14 +143,14 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Blood Group</label>
                         <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="APos">A+</option>
-                            <option value="ANeg">A-</option>
-                            <option value="BPos">B+</option>
-                            <option value="BNeg">B-</option>
-                            <option value="ABPos">AB+</option>
-                            <option value="ABNeg">AB-</option>
-                            <option value="OPos">O+</option>
-                            <option value="Oneg">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
                         </select>
                     </div>
 
@@ -168,12 +168,12 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Maritial Status</label>
                         <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="married">Married</option>
-                            <option value="unmarried">Unmarried</option>
-                            <option value="readyformarriage">Ready for marriage</option>
-                            <option value="widow">Widow</option>
-                            <option value="divorce">Divorce</option>
-                            <option value="widower">Widower</option>
+                            <option value="Married">Married</option>
+                            <option value="Unmarried">Unmarried</option>
+                            <option value="Ready For Marriage">Ready for marriage</option>
+                            <option value="Widow">Widow</option>
+                            <option value="Divorce">Divorce</option>
+                            <option value="Widower">Widower</option>
                         </select>
                     </div>
 
@@ -191,19 +191,20 @@ const FamilyMemberForm = () => {
                         <label className="form-label">Occupation</label>
                         <select name="occupation" value={formData.occupation} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="business">Business</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="finance">Finance</option>
-                            <option value="itAndSd">It & Software Development</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="eduAndRes">Education & Research</option>
-                            <option value="govAndPs">Government & Public Services</option>
-                            <option value="legalAndLaw">Legal & Law Enforcement</option>
-                            <option value="saleAndMr">Sales & Marketing</option>
-                            <option value="manuAndTrd">Manufacturing & Trades</option>
-                            <option value="entrepreneur">Entrepreneur</option>
-                            <option value="freelancer">Freelancer</option>
-                            <option value="media">Media - Journalist</option>
+                            <option value="Business">Business</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="It & Software Development">It & Software Development</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Education & Research">Education & Research</option>
+                            <option value="Government & Public Services">Government & Public Services</option>
+                            <option value="Legal & Law Enforcement">Legal & Law Enforcement</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Manufacturing & Trades">Manufacturing & Trades</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Media - Journalist">Media - Journalist</option>
+                            <option value="House Wife">House Wife</option>
                         </select>
                     </div>
 

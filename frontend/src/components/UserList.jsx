@@ -92,7 +92,12 @@ const UserList = () => {
                                 <td className="border p-2">{user.bloodGroup}</td>
                                 <td className="border p-2">{user.nativePlace}</td>
                                 <td className="border p-2">{user.totalMembers}</td>
-                                <td className="border p-2">{user.houseNo} {user.society} {user.landmark} {user.area} {user.taluka} {user.district} {user.pincode}</td>
+                                <td className="border p-2">
+                                {user.address ? (
+                                    `${user.address.houseNo || ''} ${user.address.society || ''} ${user.address.landmark || ''} 
+                                    ${user.address.area || ''} ${user.address.taluka || ''} ${user.address.district || ''} ${user.address.pincode || ''}`
+                                ) : "N/A"}
+                                </td>
                                 <td className="border p-2">{user.contactNo}</td>
                                 <td className="border p-2">{user.whatsappNo}</td>
                                 <td className="border p-2">{user.maritalStatus}</td>
@@ -105,8 +110,8 @@ const UserList = () => {
                                 <td className="border p-2">{user.monthlyIncome}</td>
                                 <td className="border p-2">{user.helpDarjiSamaj}</td>
                                 <td className="border p-2">
-                                    {/* <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-                                        onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button> */}
+                                    <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                                        onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
                                     <button className="bg-red-500 text-white px-2 py-1 rounded"
                                         onClick={() => handleDelete(user._id)}>Delete</button>
                                 </td>

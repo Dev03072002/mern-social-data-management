@@ -38,7 +38,18 @@ const UserForm = ({ initialData = null, userId = null }) => {
 
     useEffect(() => {
         if (initialData) {
-            setFormData(initialData);
+            setFormData({
+                ...initialData,
+                birthday: initialData.birthday ? initialData.birthday.split("T")[0] : "",
+                marriageDate: initialData.marriageDate ? initialData.marriageDate.split("T")[0] : "",
+                houseNo: initialData.address?.houseNo || "",
+                society: initialData.address?.society || "",
+                landmark: initialData.address?.landmark || "",
+                area: initialData.address?.area || "",
+                taluka: initialData.address?.taluka || "",
+                district: initialData.address?.district || "",
+                pincode: initialData.address?.pincode || "",
+            });
         }
     }, [initialData]);
 
@@ -58,13 +69,30 @@ const UserForm = ({ initialData = null, userId = null }) => {
         try {
             const formDataToSend = new FormData();
             const fieldsToSanitize = ["birthday", "marriageDate", "monthlyIncome", "totalMembers"];
+            const address = {
+                houseNo: formData.houseNo || "",
+                society: formData.society || "",
+                landmark: formData.landmark || "",
+                area: formData.area || "",
+                taluka: formData.taluka || "",
+                district: formData.district || "",
+                pincode: formData.pincode || "",
+            };
+
+             // Remove address fields from formData
+            ["houseNo", "society", "landmark", "area", "taluka", "district", "pincode"].forEach(key => delete formData[key]);
+            formDataToSend.set("address", JSON.stringify(address));
+
             Object.keys(formData).forEach((key) => {
                 let value = formData[key];
 
                 // Sanitize specific fields
                 if (fieldsToSanitize.includes(key) && (value === "null" || value === null)) {
-                    console.log("value", key, value);
                     value = "";
+                }
+
+                if (key === "houseNo" || key === "society" || key === "landmark" || key === "area" || key === "taluka" || key === "district" || key === "pincode" || key === "address") {
+                    return;
                 }
 
                 formDataToSend.append(key, value);
@@ -83,7 +111,7 @@ const UserForm = ({ initialData = null, userId = null }) => {
 
             if (response.data.success) {
                 alert(userId ? "User updated successfully!" : "Main family member added successfully!");
-                navigate(userId ? `/view-user/${userId}` : `/add-family-member/${response.data.userId}`);
+                navigate(userId ? `/user-list` : `/add-family-member/${response.data.userId}`);
             }
         } catch (error) {
             console.error("Error submitting form:", error);
@@ -121,8 +149,8 @@ const UserForm = ({ initialData = null, userId = null }) => {
                         <label className="form-label">Sex</label>
                         <select name="sex"  value={formData.sex} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
                         </select>
                     </div>
 
@@ -135,14 +163,14 @@ const UserForm = ({ initialData = null, userId = null }) => {
                         <label className="form-label">Blood Group</label>
                         <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="APos">A+</option>
-                            <option value="ANeg">A-</option>
-                            <option value="BPos">B+</option>
-                            <option value="BNeg">B-</option>
-                            <option value="ABPos">AB+</option>
-                            <option value="ABNeg">AB-</option>
-                            <option value="OPos">O+</option>
-                            <option value="Oneg">O-</option>
+                            <option value="A+">A+</option>
+                            <option value="A-">A-</option>
+                            <option value="B+">B+</option>
+                            <option value="B-">B-</option>
+                            <option value="AB+">AB+</option>
+                            <option value="AB-">AB-</option>
+                            <option value="O+">O+</option>
+                            <option value="O-">O-</option>
                         </select>
                     </div>
 
@@ -169,6 +197,11 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     <div>
                         <label className="form-label">Landmark</label>
                         <input type="text" name="landmark"  value={formData.landmark} onChange={handleChange} className="input-field" />
+                    </div>
+
+                    <div>
+                        <label className="form-label">Area</label>
+                        <input type="text" name="area"  value={formData.area} onChange={handleChange} className="input-field" />
                     </div>
 
                     <div>
@@ -200,8 +233,8 @@ const UserForm = ({ initialData = null, userId = null }) => {
                         <label className="form-label">Maritial Status</label>
                         <select name="maritalStatus"  value={formData.maritalStatus} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="married">Married</option>
-                            <option value="unmarried">Unmarried</option>
+                            <option value="Married">Married</option>
+                            <option value="Unmarried">Unmarried</option>
                         </select>
                     </div>
 
@@ -224,19 +257,20 @@ const UserForm = ({ initialData = null, userId = null }) => {
                         <label className="form-label">Occupation</label>
                         <select name="occupation"  value={formData.occupation} onChange={handleChange} className="input-field" >
                             <option value="">Select</option>
-                            <option value="business">Business</option>
-                            <option value="healthcare">Healthcare</option>
-                            <option value="finance">Finance</option>
-                            <option value="itAndSd">It & Software Development</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="eduAndRes">Education & Research</option>
-                            <option value="govAndPs">Government & Public Services</option>
-                            <option value="legalAndLaw">Legal & Law Enforcement</option>
-                            <option value="saleAndMr">Sales & Marketing</option>
-                            <option value="manuAndTrd">Manufacturing & Trades</option>
-                            <option value="entrepreneur">Entrepreneur</option>
-                            <option value="freelancer">Freelancer</option>
-                            <option value="media">Media - Journalist</option>
+                            <option value="Business">Business</option>
+                            <option value="Healthcare">Healthcare</option>
+                            <option value="Finance">Finance</option>
+                            <option value="It & Software Development">It & Software Development</option>
+                            <option value="Engineering">Engineering</option>
+                            <option value="Education & Research">Education & Research</option>
+                            <option value="Government & Public Services">Government & Public Services</option>
+                            <option value="Legal & Law Enforcement">Legal & Law Enforcement</option>
+                            <option value="Sales & Marketing">Sales & Marketing</option>
+                            <option value="Manufacturing & Trades">Manufacturing & Trades</option>
+                            <option value="Entrepreneur">Entrepreneur</option>
+                            <option value="Freelancer">Freelancer</option>
+                            <option value="Media - Journalist">Media - Journalist</option>
+                            <option value="House Wife">House Wife</option>
                         </select>
                     </div>
 
@@ -257,6 +291,13 @@ const UserForm = ({ initialData = null, userId = null }) => {
 
                     <div>
                         <label className="form-label">Upload Photo</label>
+                        {formData.passportPhoto && typeof formData.passportPhoto === "string" ? (
+                            <img 
+                                src={`data:image/png;base64,${formData.passportPhoto}`} 
+                                alt="Current Passport" 
+                                className="w-24 h-24 border border-gray-300"
+                            />
+                        ) : null}
                         <input type="file" name="passportPhoto" onChange={handleChange} className="input-field" accept="image/*" />
                     </div>
 
