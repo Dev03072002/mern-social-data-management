@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const familyMemberSchema = new mongoose.Schema({
     mainMemberId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-    relation: { type: String, enum: ["wife", "husband", "son", "daughter", "mother", "father", "brother", "sister", "daughter-in-law", "grandson", "granddaughter"], required: true },
+    relation: { type: String, enum: ["Wife", "Husband", "Son", "Daughter", "Mother", "Father", "Brother", "Sister", "Daughter In Law", "Grand Son", "Grand Daughter"], required: true },
     name: String,
     middleName: String,
     surname: String,

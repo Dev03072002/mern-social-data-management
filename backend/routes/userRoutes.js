@@ -1,6 +1,7 @@
 const express = require("express");
 const multer = require("multer");
 const User = require("../models/User");
+const FamilyMember = require("../models/FamilyMember");
 
 const router = express.Router();
 
@@ -95,10 +96,14 @@ router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
 // Delete route to delete a single user
 router.delete("/delete/:id", async (req, res) => {
     try {
-        const deletedUser = await User.findByIdAndDelete(req.params.id);
-        if (!deletedUser) return res.status(404).json({ message: "User not found" });
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
 
-        res.json({ success: true, message: "User deleted successfully" });
+        await FamilyMember.deleteMany({ _id: { $in: user.familyMembers } });
+
+        await User.findByIdAndDelete(req.params.id);
+
+        res.json({ success: true, message: "User and associated family members deleted successfully" });
     } catch (error) {
         console.error("Error deleting user:", error);
         res.status(500).json({ message: "Server Error" });

@@ -15,8 +15,6 @@ router.post("/add-daughter-family-member", upload.single("passportPhoto"), async
     try {
         const { daughterId, ...familyData } = req.body;
 
-        console.log("Data", familyData);
-
         // Validate if the main member exists
         const daughterDetails = await MarriedDaughter.findById(daughterId);
         if (!daughterDetails) {

@@ -24,7 +24,7 @@ const UserList = () => {
             try {
                 await axios.delete(`${API_BASE_URL}/api/users/delete/${id}`);
                 setUsers(users.filter(user => user._id !== id));
-                alert("User deleted successfully!");
+                alert("User and associated family members deleted successfully!");
             } catch (error) {
                 console.error("Error deleting user:", error);
                 alert("Failed to delete user.");
@@ -45,7 +45,7 @@ const UserList = () => {
                 >
                     Go to Home page
                 </button>
-            <h2 className="text-2xl font-semibold mb-4 text-center">Family Members List</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-center">Main Family Members List</h2>
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300">
                     <thead className="bg-blue-100 sticky top-0">
@@ -80,7 +80,7 @@ const UserList = () => {
                                         <img 
                                             src={`data:image/png;base64,${user.passportPhoto}`} 
                                             alt="Passport" 
-                                            className="w-24 h-24 mx-auto border border-gray-300"
+                                            className="w-24 h-24 max-w-none mx-auto border border-gray-300"
                                         />
                                     ) : (
                                         <span>No Photo</span>
@@ -110,6 +110,10 @@ const UserList = () => {
                                 <td className="border p-2">{user.monthlyIncome}</td>
                                 <td className="border p-2">{user.helpDarjiSamaj}</td>
                                 <td className="border p-2">
+                                    <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
+                                        onClick={() => navigate(`/family-members/${user._id}`)}>
+                                        View Family Members
+                                    </button>
                                     <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
                                         onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
                                     <button className="bg-red-500 text-white px-2 py-1 rounded"

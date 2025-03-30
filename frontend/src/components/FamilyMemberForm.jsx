@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const FamilyMemberForm = () => {
+const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -25,6 +25,16 @@ const FamilyMemberForm = () => {
         helpDarjiSamaj: ""
     });
 
+    useEffect(() => {
+            if (initialData) {
+                setFormData({
+                    ...initialData,
+                    birthday: initialData.birthday ? initialData.birthday.split("T")[0] : "",
+                    marriageDate: initialData.marriageDate ? initialData.marriageDate.split("T")[0] : "",
+                });
+            }
+        }, [initialData]);
+
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const handleChange = (e) => {
@@ -40,17 +50,36 @@ const FamilyMemberForm = () => {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
+            const fieldsToSanitize = ["birthday", "marriageDate", "monthlyIncome"];
+
             Object.keys(formData).forEach((key) => {
-                formDataToSend.append(key, formData[key]);
+                let value = formData[key];
+
+                if (fieldsToSanitize.includes(key) && (value === "null" || value === null)) {
+                    value = "";
+                }
+
+                formDataToSend.append(key, value);
             });
 
-            formDataToSend.append("mainMemberId", id);
+            let response;
 
-            await axios.post(`${API_BASE_URL}/api/family/add-family-member`, formDataToSend, {
-                headers: { "Content-Type": "multipart/form-data" }
-            });
+            if (familyMemberId) {
+                response = await axios.put(`${API_BASE_URL}/api/family/${familyMemberId}`, formDataToSend, {
+                    headers: { "Content-Type": "multipart/form-data" },
+                });
+            } else {
+                formDataToSend.append("mainMemberId", id);
 
-            alert("Family member added successfully!");
+                response = await axios.post(`${API_BASE_URL}/api/family/add-family-member`, formDataToSend, {
+                    headers: { "Content-Type": "multipart/form-data" }
+                });
+            }
+
+            if (response.data.success) {
+                alert(familyMemberId ? "Family member updated successfully!" : "Family member added successfully!");
+                navigate(familyMemberId ? `/family-members/${initialData.mainMemberId}` : `/add-family-member/${id}`);
+            }
 
             setFormData({
                 relation: "", 
@@ -225,6 +254,13 @@ const FamilyMemberForm = () => {
 
                     <div>
                         <label className="form-label">Upload Photo</label>
+                        {formData.passportPhoto && typeof formData.passportPhoto === "string" ? (
+                            <img 
+                                src={`data:image/png;base64,${formData.passportPhoto}`} 
+                                alt="Current Passport" 
+                                className="w-24 h-24 border border-gray-300"
+                            />
+                        ) : null}
                         <input type="file" name="passportPhoto" onChange={handleChange} className="input-field" accept="image/*" />
                     </div>
 
@@ -235,16 +271,18 @@ const FamilyMemberForm = () => {
                 </div>
 
                 <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">
-                    Submit
+                    {familyMemberId ? "Update" : "Submit"}
                 </button>
 
-                <button 
-                    type="button"
-                    onClick={handleNextForm}
-                    className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
-                >
-                    Next Form
-                </button>
+                {!familyMemberId && (
+                    <button 
+                        type="button"
+                        onClick={handleNextForm}
+                        className="w-full mt-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+                    >
+                        Next Form
+                    </button>
+                )}
             </form>
         </div>
     );
