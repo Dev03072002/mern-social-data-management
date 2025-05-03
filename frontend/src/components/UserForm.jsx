@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./UserForm.css";
 
+const RequiredAsterisk = () => <span className="text-red-500 ml-1">*</span>;
+
 const UserForm = ({ initialData = null, userId = null }) => {
     const navigate = useNavigate();
 
@@ -131,22 +133,22 @@ const UserForm = ({ initialData = null, userId = null }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label className="form-label">First Name</label>
+                        <label className="form-label">First Name <RequiredAsterisk /> </label>
                         <input type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Middle Name</label>
-                        <input type="text" name="middleName" value={formData.middleName} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Middle Name <RequiredAsterisk /> </label>
+                        <input type="text" name="middleName" value={formData.middleName} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Surname</label>
+                        <label className="form-label">Surname <RequiredAsterisk /> </label>
                         <input type="text" name="surname" value={formData.surname} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Sex</label>
+                        <label className="form-label">Sex <RequiredAsterisk /> </label>
                         <select name="sex"  value={formData.sex} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="Male">Male</option>
@@ -155,13 +157,13 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Birthday</label>
+                        <label className="form-label">Birthday <RequiredAsterisk /> </label>
                         <input type="date" name="birthday"  value={formData.birthday} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Blood Group</label>
-                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Blood Group <RequiredAsterisk /> </label>
+                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -175,33 +177,33 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Native Place</label>
-                        <input type="text" name="nativePlace"  value={formData.nativePlace} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Native Place <RequiredAsterisk /> </label>
+                        <input type="text" name="nativePlace"  value={formData.nativePlace} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Total Family Members</label>
-                        <input type="number" name="totalMembers"  value={formData.totalMembers} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Total Family Members <RequiredAsterisk /> </label>
+                        <input type="number" name="totalMembers"  value={formData.totalMembers} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">House No.</label>
-                        <input type="text" name="houseNo"  value={formData.houseNo} onChange={handleChange} className="input-field" />
+                        <label className="form-label">House No. <RequiredAsterisk /> </label>
+                        <input type="text" name="houseNo"  value={formData.houseNo} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Society/Faliya Name</label>
-                        <input type="text" name="society"  value={formData.society} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Society/Faliya Name <RequiredAsterisk /> </label>
+                        <input type="text" name="society"  value={formData.society} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Landmark</label>
-                        <input type="text" name="landmark"  value={formData.landmark} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Landmark <RequiredAsterisk /> </label>
+                        <input type="text" name="landmark"  value={formData.landmark} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Area</label>
-                        <input type="text" name="area"  value={formData.area} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Area <RequiredAsterisk /> </label>
+                        <input type="text" name="area"  value={formData.area} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
@@ -210,18 +212,18 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">District</label>
-                        <input type="text" name="district"  value={formData.district} onChange={handleChange} className="input-field" />
+                        <label className="form-label">District <RequiredAsterisk /> </label>
+                        <input type="text" name="district"  value={formData.district} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Pincode</label>
-                        <input type="number" name="pincode"  value={formData.pincode} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Pincode <RequiredAsterisk /> </label>
+                        <input type="number" name="pincode"  value={formData.pincode} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Contact No.</label>
-                        <input type="number" name="contactNo"  value={formData.contactNo} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Contact No. <RequiredAsterisk /> </label>
+                        <input type="number" name="contactNo"  value={formData.contactNo} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
@@ -230,8 +232,8 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Maritial Status</label>
-                        <select name="maritalStatus"  value={formData.maritalStatus} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Maritial Status <RequiredAsterisk /> </label>
+                        <select name="maritalStatus"  value={formData.maritalStatus} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="Married">Married</option>
                             <option value="Unmarried">Unmarried</option>
@@ -244,18 +246,18 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Email ID</label>
-                        <input type="email" name="email"  value={formData.email} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Email ID <RequiredAsterisk /> </label>
+                        <input type="email" name="email"  value={formData.email} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Education</label>
-                        <input type="text" name="education"  value={formData.education} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Education <RequiredAsterisk /> </label>
+                        <input type="text" name="education"  value={formData.education} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Occupation</label>
-                        <select name="occupation"  value={formData.occupation} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Occupation <RequiredAsterisk /> </label>
+                        <select name="occupation"  value={formData.occupation} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="Business">Business</option>
                             <option value="Healthcare">Healthcare</option>
@@ -271,6 +273,7 @@ const UserForm = ({ initialData = null, userId = null }) => {
                             <option value="Freelancer">Freelancer</option>
                             <option value="Media - Journalist">Media - Journalist</option>
                             <option value="House Wife">House Wife</option>
+                            <option value="Student">Student</option>
                         </select>
                     </div>
 
@@ -290,7 +293,7 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Upload Photo</label>
+                        <label className="form-label">Upload Photo <RequiredAsterisk /> </label>
                         {formData.passportPhoto && typeof formData.passportPhoto === "string" ? (
                             <img 
                                 src={`data:image/png;base64,${formData.passportPhoto}`} 
@@ -302,8 +305,8 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div className="md:col-span-2">
-                        <label className="form-label">Ways to Help Darji Samaj</label>
-                        <textarea name="helpDarjiSamaj"  value={formData.helpDarjiSamaj} onChange={handleChange} className="input-field"></textarea>
+                        <label className="form-label">Ways to Help Darji Samaj <RequiredAsterisk /> </label>
+                        <textarea name="helpDarjiSamaj"  value={formData.helpDarjiSamaj} onChange={handleChange} className="input-field" required></textarea>
                     </div>
                 </div>
 

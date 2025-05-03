@@ -1,20 +1,15 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const Login = ({ handleLogin }) => {
+const AddAdmin = () => {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
-  const location = useLocation();
 
-  useEffect(() => {
-    if (location.state?.signupSuccess) {
-      setSuccessMessage(location.state.message || "Signup successful! Please log in.");
-      navigate(location.pathname, { replace: true, state: {} });
-    }
-  }, [location, navigate]);
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
   const handleInputChange = (setter) => (e) => {
     setter(e.target.value);
@@ -28,21 +23,31 @@ const Login = ({ handleLogin }) => {
     setErrorMessage("");
     setSuccessMessage("");
 
-    // Dummy authentication logic (Replace with actual API call)
-    // if (mobile === "1234567890" && password === "password") {
-    //     handleLogin();
-    //     navigate("/home");
-    // } else {
-    //   alert("Invalid credentials");
-    // }
+    if (password.length < 6) {
+      setErrorMessage("Password must be at least 6 characters long.");
+      return;
+    }
+    if (!/^\d{10}$/.test(mobile)) {
+      setErrorMessage("Please enter a valid 10-digit mobile number.");
+      return;
+    }
+
     try {
-      await handleLogin({ phoneNumber: mobile, password });
-      navigate("/home");
+      const response = await axios.post(
+        `${API_BASE_URL}/api/auth/add-admin`,
+        { phoneNumber: mobile, password }
+      );
+
+      setSuccessMessage(response.data.message || "Admin user added successfully!");
+
+      setMobile("");
+      setPassword("");
+
+      //   navigate("/home");
     } catch (error) {
-      // alert("Invalid credentials");
-      const message = error.response?.data?.message || "Invalid Credentials";
-      setErrorMessage(message);
       console.error("Error submitting form:", error);
+      const message = error.response?.data?.message || "Unable to add new admin user. Please try again later.";
+      setErrorMessage(message);
     }
   };
 
@@ -50,7 +55,6 @@ const Login = ({ handleLogin }) => {
     setSuccessMessage("");
   };
 
-  // Function to close the error message
   const closeErrorMessage = () => {
     setErrorMessage("");
   };
@@ -58,7 +62,7 @@ const Login = ({ handleLogin }) => {
   return (
     <div className="flex items-center justify-center bg-white p-6">
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg p-8 w-full max-w-3xl border border-blue-300">
-        <h2 className="text-2xl font-semibold mb-6 text-center text-blue-700">Login</h2>
+        <h2 className="text-2xl font-semibold mb-6 text-center text-blue-700">Add New Admin User</h2>
 
         {successMessage && (
           <div className="flex items-center justify-between mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
@@ -102,10 +106,10 @@ const Login = ({ handleLogin }) => {
 
         </div>
 
-        <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">Login</button>
+        <button type="submit" className="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg">Add Admin</button>
       </form>
     </div>
   );
 };
 
-export default Login;
+export default AddAdmin;

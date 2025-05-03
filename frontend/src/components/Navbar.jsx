@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 
-const Navbar = ({ isLoggedIn, handleLogout }) => {
+const Navbar = ({ isLoggedIn, userRole, handleLogout }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -33,6 +33,16 @@ const Navbar = ({ isLoggedIn, handleLogout }) => {
           <Link to={isLoggedIn ? "/home" : "/"} className="nav-link">
             {isLoggedIn ? "Dashboard" : "Login"}
           </Link>
+          {!isLoggedIn && (
+            <Link to="/sign-up" className="nav-link">
+              Sign Up
+            </Link>
+          )}
+          {isLoggedIn && userRole === 'admin' && (
+            <Link to="/add-admin" className="nav-link">
+              Add Admin
+            </Link>
+          )}
           {isLoggedIn && (
             <button className="nav-link logout-btn" onClick={handleLogoutClick}>
               Logout

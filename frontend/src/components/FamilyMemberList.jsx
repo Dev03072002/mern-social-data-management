@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
-const UserList = () => {
+const UserList = ({ userRole }) => {
     const [users, setUsers] = useState([]);
     const { id } = useParams();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -83,7 +83,9 @@ const UserList = () => {
                             <th className="border p-2">Designation</th>
                             <th className="border p-2">Monthly Income in INR (In Lacs)</th>
                             <th className="border p-2">Ways to Help Darji Samaj</th>
-                            <th className="border p-2">Actions</th>
+                            {userRole === 'admin' && (
+                                <th className="border p-2">Actions</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody>
@@ -122,10 +124,14 @@ const UserList = () => {
                                     <td className="border p-2">{user.monthlyIncome}</td>
                                     <td className="border p-2">{user.helpDarjiSamaj}</td>
                                     <td className="border p-2">
-                                        <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-                                            onClick={() => navigate(`/edit-family-member/${user._id}`)}>Edit</button>
-                                        <button className="bg-red-500 text-white px-2 py-1 rounded"
-                                            onClick={() => handleDelete(user._id)}>Delete</button>
+                                        {userRole === 'admin' && (
+                                            <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                                                onClick={() => navigate(`/edit-family-member/${user._id}`)}>Edit</button>
+                                        )}
+                                        {userRole === 'admin' && (
+                                            <button className="bg-red-500 text-white px-2 py-1 rounded"
+                                                onClick={() => handleDelete(user._id)}>Delete</button>
+                                        )}
                                     </td>
                                 </tr>
                             ))
@@ -133,13 +139,15 @@ const UserList = () => {
                     </tbody>
                 </table>
             </div>
-            <button
-                type="button"
-                onClick={handleAddNewForm}
-                className="w-60 my-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
-            >
-                Add new family member
-            </button>
+            {userRole === 'admin' && (
+                <button
+                    type="button"
+                    onClick={handleAddNewForm}
+                    className="w-60 my-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+                >
+                    Add new family member
+                </button>
+            )}
         </div>
     );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const UserList = () => {
+const UserList = ({ userRole }) => {
     const [users, setUsers] = useState([]);
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
@@ -38,13 +38,13 @@ const UserList = () => {
 
     return (
         <div className="container mx-auto p-6">
-            <button 
-                    type="button"
-                    onClick={handleNextForm}
-                    className="w-60 my-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
-                >
-                    Go to Home page
-                </button>
+            <button
+                type="button"
+                onClick={handleNextForm}
+                className="w-60 my-4 bg-green-600 hover:bg-green-700 text-white py-2 rounded-lg"
+            >
+                Go to Home page
+            </button>
             <h2 className="text-2xl font-semibold mb-4 text-center">Main Family Members List</h2>
             <div className="overflow-x-auto">
                 <table className="w-full border-collapse border border-gray-300">
@@ -77,9 +77,9 @@ const UserList = () => {
                             <tr key={user._id} className="text-center border-b">
                                 <td className="border p-2">
                                     {user.passportPhoto ? (
-                                        <img 
-                                            src={`data:image/png;base64,${user.passportPhoto}`} 
-                                            alt="Passport" 
+                                        <img
+                                            src={`data:image/png;base64,${user.passportPhoto}`}
+                                            alt="Passport"
                                             className="w-24 h-24 max-w-none mx-auto border border-gray-300"
                                         />
                                     ) : (
@@ -93,10 +93,10 @@ const UserList = () => {
                                 <td className="border p-2">{user.nativePlace}</td>
                                 <td className="border p-2">{user.totalMembers}</td>
                                 <td className="border p-2">
-                                {user.address ? (
-                                    `${user.address.houseNo || ''} ${user.address.society || ''} ${user.address.landmark || ''} 
+                                    {user.address ? (
+                                        `${user.address.houseNo || ''} ${user.address.society || ''} ${user.address.landmark || ''} 
                                     ${user.address.area || ''} ${user.address.taluka || ''} ${user.address.district || ''} ${user.address.pincode || ''}`
-                                ) : "N/A"}
+                                    ) : "N/A"}
                                 </td>
                                 <td className="border p-2">{user.contactNo}</td>
                                 <td className="border p-2">{user.whatsappNo}</td>
@@ -114,10 +114,14 @@ const UserList = () => {
                                         onClick={() => navigate(`/family-members/${user._id}`)}>
                                         View Family Members
                                     </button>
-                                    <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-                                        onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
-                                    <button className="bg-red-500 text-white px-2 py-1 rounded"
-                                        onClick={() => handleDelete(user._id)}>Delete</button>
+                                    {userRole === 'admin' && (
+                                        <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                                            onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
+                                    )}
+                                    {userRole === 'admin' && (
+                                        <button className="bg-red-500 text-white px-2 py-1 rounded"
+                                            onClick={() => handleDelete(user._id)}>Delete</button>
+                                    )}
                                 </td>
                             </tr>
                         ))}

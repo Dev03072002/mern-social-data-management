@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
+const RequiredAsterisk = () => <span className="text-red-500 ml-1">*</span>;
+
 const MarriedDaughterForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -87,35 +89,35 @@ const MarriedDaughterForm = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                     <div>
-                        <label className="form-label">First Name</label>
+                        <label className="form-label">First Name <RequiredAsterisk /> </label>
                         <input type="text" name="name" value={formData.name} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Middle Name</label>
-                        <input type="text" name="middleName" value={formData.middleName} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Middle Name <RequiredAsterisk /> </label>
+                        <input type="text" name="middleName" value={formData.middleName} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Surname</label>
+                        <label className="form-label">Surname <RequiredAsterisk /> </label>
                         <input type="text" name="surname" value={formData.surname} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Sex</label>
+                        <label className="form-label">Sex <RequiredAsterisk /> </label>
                         <select name="sex" value={formData.sex} onChange={handleChange} className="input-field" required>
                             <option value="Female">Female</option>
                         </select>
                     </div>
 
                     <div>
-                        <label className="form-label">Birthday</label>
+                        <label className="form-label">Birthday <RequiredAsterisk /> </label>
                         <input type="date" name="birthday" value={formData.birthday} onChange={handleChange} className="input-field" required />
                     </div>
 
                     <div>
-                        <label className="form-label">Blood Group</label>
-                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Blood Group <RequiredAsterisk /> </label>
+                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
@@ -129,18 +131,18 @@ const MarriedDaughterForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">House No.</label>
-                        <input type="text" name="houseNo" onChange={handleChange} className="input-field" />
+                        <label className="form-label">House No. <RequiredAsterisk /> </label>
+                        <input type="text" name="houseNo" onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Society/Faliya Name</label>
-                        <input type="text" name="society" onChange={handleChange} className="input-field" />
+                        <label className="form-label">Society/Faliya Name <RequiredAsterisk /> </label>
+                        <input type="text" name="society" onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Landmark</label>
-                        <input type="text" name="landmark" onChange={handleChange} className="input-field" />
+                        <label className="form-label">Landmark <RequiredAsterisk /> </label>
+                        <input type="text" name="landmark" onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
@@ -149,18 +151,18 @@ const MarriedDaughterForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">District</label>
-                        <input type="text" name="district" onChange={handleChange} className="input-field" />
+                        <label className="form-label">District <RequiredAsterisk /> </label>
+                        <input type="text" name="district" onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Pincode</label>
-                        <input type="number" name="pincode" onChange={handleChange} className="input-field" />
+                        <label className="form-label">Pincode <RequiredAsterisk /> </label>
+                        <input type="number" name="pincode" onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Contact No.</label>
-                        <input type="number" name="contactNo" value={formData.contactNo} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Contact No. <RequiredAsterisk /> </label>
+                        <input type="number" name="contactNo" value={formData.contactNo} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
@@ -169,8 +171,8 @@ const MarriedDaughterForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">Maritial Status</label>
-                        <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Maritial Status <RequiredAsterisk /> </label>
+                        <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="Married">Married</option>
                             <option value="Widow">Widow</option>
@@ -179,23 +181,23 @@ const MarriedDaughterForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">Date of Marriage</label>
-                        <input type="date" name="marriageDate" value={formData.marriageDate} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Date of Marriage <RequiredAsterisk /> </label>
+                        <input type="date" name="marriageDate" value={formData.marriageDate} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Darji God</label>
-                        <input type="text" name="darjiGod" value={formData.darjiGod} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Darji God <RequiredAsterisk /> </label>
+                        <input type="text" name="darjiGod" value={formData.darjiGod} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Education</label>
-                        <input type="text" name="education" value={formData.education} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Education <RequiredAsterisk /> </label>
+                        <input type="text" name="education" value={formData.education} onChange={handleChange} className="input-field" required/>
                     </div>
 
                     <div>
-                        <label className="form-label">Occupation</label>
-                        <select name="occupation" value={formData.occupation} onChange={handleChange} className="input-field" >
+                        <label className="form-label">Occupation <RequiredAsterisk /> </label>
+                        <select name="occupation" value={formData.occupation} onChange={handleChange} className="input-field" required>
                             <option value="">Select</option>
                             <option value="Business">Business</option>
                             <option value="Healthcare">Healthcare</option>
@@ -211,6 +213,7 @@ const MarriedDaughterForm = () => {
                             <option value="Freelancer">Freelancer</option>
                             <option value="Media - Journalist">Media - Journalist</option>
                             <option value="House Wife">House Wife</option>
+                            <option value="Student">Student</option>
                         </select>
                     </div>
 
@@ -230,13 +233,13 @@ const MarriedDaughterForm = () => {
                     </div>
 
                     <div>
-                        <label className="form-label">Upload Photo</label>
+                        <label className="form-label">Upload Photo <RequiredAsterisk /> </label>
                         <input type="file" name="passportPhoto" onChange={handleChange} className="input-field" accept="image/*" />
                     </div>
 
                     <div className="md:col-span-2">
-                        <label className="form-label">Ways to Help Darji Samaj</label>
-                        <textarea name="helpDarjiSamaj" value={formData.helpDarjiSamaj} onChange={handleChange} className="input-field"></textarea>
+                        <label className="form-label">Ways to Help Darji Samaj <RequiredAsterisk /> </label>
+                        <textarea name="helpDarjiSamaj" value={formData.helpDarjiSamaj} onChange={handleChange} className="input-field" required></textarea>
                     </div>
                 </div>
 
