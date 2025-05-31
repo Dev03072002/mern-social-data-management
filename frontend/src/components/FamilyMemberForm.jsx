@@ -22,7 +22,7 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
         occupation: "", 
         companyName: "", 
         designation: "",
-        monthlyIncome: "", 
+        yearlyIncome: "", 
         passportPhoto: null,
         helpDarjiSamaj: ""
     });
@@ -52,7 +52,7 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
-            const fieldsToSanitize = ["birthday", "marriageDate", "monthlyIncome"];
+            const fieldsToSanitize = ["birthday", "marriageDate", "yearlyIncome"];
 
             Object.keys(formData).forEach((key) => {
                 let value = formData[key];
@@ -98,7 +98,7 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
                 occupation: "", 
                 companyName: "", 
                 designation: "",
-                monthlyIncome: "", 
+                yearlyIncome: "", 
                 passportPhoto: null,
                 helpDarjiSamaj: ""
             });
@@ -235,6 +235,8 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
                             <option value="Entrepreneur">Entrepreneur</option>
                             <option value="Freelancer">Freelancer</option>
                             <option value="Media - Journalist">Media - Journalist</option>
+                            <option value="Tailoring">Tailoring</option>
+                            <option value="Salaried">Salaried</option>
                             <option value="House Wife">House Wife</option>
                             <option value="Student">Student</option>
                         </select>
@@ -251,8 +253,8 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Monthly Income in INR (In Lacs)</label>
-                        <input type="number" name="monthlyIncome" value={formData.monthlyIncome} onChange={handleChange} className="input-field" />
+                        <label className="form-label">Yearly Income in INR (In Lacs)</label>
+                        <input type="number" name="yearlyIncome" value={formData.yearlyIncome} onChange={handleChange} className="input-field" />
                     </div>
 
                     <div>

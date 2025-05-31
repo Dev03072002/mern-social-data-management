@@ -27,11 +27,12 @@ const userSchema = new mongoose.Schema({
     occupation: String,
     companyName: String,
     designation: String,
-    monthlyIncome: Number,
+    yearlyIncome: Number,
     passportPhoto: String,
     helpDarjiSamaj: String,
     familyMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: "FamilyMember" }],
     marriedDaughters: [{ type: mongoose.Schema.Types.ObjectId, ref: "MarriedDaughter" }],
+    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "AuthUser" },
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);

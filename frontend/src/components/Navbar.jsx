@@ -8,10 +8,12 @@ const Navbar = ({ isLoggedIn, userRole, handleLogout }) => {
 
   const handleLogoutClick = () => {
     handleLogout();
+    setIsOpen(false);
     navigate("/");
   };
 
   const navigateToHome = () => {
+    setIsOpen(false);
     navigate(`/home`);
   };
 
@@ -30,16 +32,16 @@ const Navbar = ({ isLoggedIn, userRole, handleLogout }) => {
 
         
         <div className={`nav-links ${isOpen ? "open" : ""}`}>
-          <Link to={isLoggedIn ? "/home" : "/"} className="nav-link">
+          <Link to={isLoggedIn ? "/home" : "/"} className="nav-link" onClick={() => setIsOpen(false)}>
             {isLoggedIn ? "Dashboard" : "Login"}
           </Link>
-          {!isLoggedIn && (
-            <Link to="/sign-up" className="nav-link">
+          {/* {!isLoggedIn && (
+            <Link to="/sign-up" className="nav-link" onClick={() => setIsOpen(false)}>
               Sign Up
             </Link>
-          )}
-          {isLoggedIn && userRole === 'admin' && (
-            <Link to="/add-admin" className="nav-link">
+          )} */}
+          {isLoggedIn && (userRole === 'superadmin') && (
+            <Link to="/add-admin" className="nav-link" onClick={() => setIsOpen(false)}>
               Add Admin
             </Link>
           )}

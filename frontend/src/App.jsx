@@ -20,6 +20,7 @@ import SignUp from "./components/SignUp";
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [userRole, setUserRole] = useState(null);
+  const [userName, setUserName] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -30,6 +31,7 @@ function App() {
       if (!token) {
         setIsLoggedIn(false);
         setUserRole(null);
+        setUserName(null);
         setLoading(false);
         return;
       }
@@ -41,16 +43,19 @@ function App() {
         if (response.status === 200) {
           setIsLoggedIn(true);
           setUserRole(response.data.role);
+          setUserName(response.data.name);
         } else {
           localStorage.removeItem("authToken");
           setIsLoggedIn(false);
           setUserRole(null);
+          setUserName(null);
         }
       } catch (error) {
         console.error("Invalid token, logging out");
         localStorage.removeItem("authToken");
         setIsLoggedIn(false);
         setUserRole(null);
+        setUserName(null);
       } finally {
         setLoading(false); // Authentication check completed
       }
@@ -62,12 +67,13 @@ function App() {
   const handleLogin = async (userCredentials) => {
     try {
       const response = await axios.post(`${API_BASE_URL}/api/auth/login`, userCredentials);
-      const { token, role } = response.data;
+      const { token, role, name } = response.data;
 
       localStorage.setItem("authToken", token);
       axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
       setIsLoggedIn(true);
       setUserRole(role);
+      setUserName(name);
     } catch (error) {
       console.error("Login failed", error);
       throw error;
@@ -77,6 +83,7 @@ function App() {
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUserRole(null);
+    setUserName(null);
     localStorage.removeItem("authToken");
     delete axios.defaults.headers.common["Authorization"];
   };
@@ -90,17 +97,17 @@ function App() {
       <Navbar isLoggedIn={isLoggedIn} userRole={userRole} handleLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Login handleLogin={handleLogin} />} />
-        <Route path="/home" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Home userRole={userRole} /></ProtectedRoute>} />
-        <Route path="/add-main-family-member" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><UserForm /></ProtectedRoute>} />
-        <Route path="/add-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><FamilyMemberForm /></ProtectedRoute>} />
-        <Route path="/add-daughter-detail/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><MarriedDaughterForm /></ProtectedRoute>} />
-        <Route path="/add-daughter-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><MarriedDaughterFamilyForm /></ProtectedRoute>} />
+        <Route path="/home" element={<ProtectedRoute isLoggedIn={isLoggedIn}><Home userRole={userRole} userName={userName} /></ProtectedRoute>} />
+        <Route path="/add-main-family-member" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><UserForm /></ProtectedRoute>} />
+        <Route path="/add-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><FamilyMemberForm /></ProtectedRoute>} />
+        <Route path="/add-daughter-detail/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><MarriedDaughterForm /></ProtectedRoute>} />
+        <Route path="/add-daughter-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><MarriedDaughterFamilyForm /></ProtectedRoute>} />
         <Route path="/user-list" element={<ProtectedRoute isLoggedIn={isLoggedIn}><UserList userRole={userRole} /></ProtectedRoute>} />
-        <Route path="/edit-user/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><EditUser /></ProtectedRoute>} />
+        <Route path="/edit-user/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><EditUser /></ProtectedRoute>} />
         <Route path="/family-members/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn}><FamilyMemberList userRole={userRole} /></ProtectedRoute>} />
-        <Route path="/edit-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><EditFamilyMember /></ProtectedRoute>} />
-        <Route path="/add-admin" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole="admin" currentRole={userRole}><AddAdmin /></ProtectedRoute>} />
-        <Route path="/sign-up" element={<SignUp />} />
+        <Route path="/edit-family-member/:id" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['admin', 'superadmin']} currentRole={userRole}><EditFamilyMember /></ProtectedRoute>} />
+        <Route path="/add-admin" element={<ProtectedRoute isLoggedIn={isLoggedIn} requiredRole={['superadmin']} currentRole={userRole}><AddAdmin /></ProtectedRoute>} />
+        {/* <Route path="/sign-up" element={<SignUp />} /> */}
         
         <Route path="*" element={<Navigate to={isLoggedIn ? "/home" : "/"} />} />
       </Routes>

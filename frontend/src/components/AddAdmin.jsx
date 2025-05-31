@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const AddAdmin = () => {
   const [mobile, setMobile] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const navigate = useNavigate();
@@ -35,13 +36,14 @@ const AddAdmin = () => {
     try {
       const response = await axios.post(
         `${API_BASE_URL}/api/auth/add-admin`,
-        { phoneNumber: mobile, password }
+        { phoneNumber: mobile, password, name }
       );
 
       setSuccessMessage(response.data.message || "Admin user added successfully!");
 
       setMobile("");
       setPassword("");
+      setName("");
 
       //   navigate("/home");
     } catch (error) {
@@ -93,6 +95,11 @@ const AddAdmin = () => {
         )}
 
         <div className="grid grid-cols-1 gap-4">
+
+          <div>
+            <label className="form-label">Name</label>
+            <input type="text" value={name} onChange={handleInputChange(setName)} className="input-field" required />
+          </div>
 
           <div>
             <label className="form-label">Mobile No.</label>

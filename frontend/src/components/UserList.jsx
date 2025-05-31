@@ -67,64 +67,78 @@ const UserList = ({ userRole }) => {
                             <th className="border p-2">Occupation</th>
                             <th className="border p-2">Name of the Company</th>
                             <th className="border p-2">Designation</th>
-                            <th className="border p-2">Monthly Income in INR (In Lacs)</th>
+                            <th className="border p-2">Yearly Income in INR (In Lacs)</th>
                             <th className="border p-2">Ways to Help Darji Samaj</th>
                             <th className="border p-2">Actions</th>
+                            {userRole === 'superadmin' && (
+                                <th className="border p-2">Created By</th>
+                            )}
                         </tr>
                     </thead>
                     <tbody>
-                        {users.map(user => (
-                            <tr key={user._id} className="text-center border-b">
-                                <td className="border p-2">
-                                    {user.passportPhoto ? (
-                                        <img
-                                            src={`data:image/png;base64,${user.passportPhoto}`}
-                                            alt="Passport"
-                                            className="w-24 h-24 max-w-none mx-auto border border-gray-300"
-                                        />
-                                    ) : (
-                                        <span>No Photo</span>
-                                    )}
-                                </td>
-                                <td className="border p-2">{user.name} {user.middleName} {user.surname}</td>
-                                <td className="border p-2">{user.sex}</td>
-                                <td className="border p-2">{formatDate(user.birthday)}</td>
-                                <td className="border p-2">{user.bloodGroup}</td>
-                                <td className="border p-2">{user.nativePlace}</td>
-                                <td className="border p-2">{user.totalMembers}</td>
-                                <td className="border p-2">
-                                    {user.address ? (
-                                        `${user.address.houseNo || ''} ${user.address.society || ''} ${user.address.landmark || ''} 
-                                    ${user.address.area || ''} ${user.address.taluka || ''} ${user.address.district || ''} ${user.address.pincode || ''}`
-                                    ) : "N/A"}
-                                </td>
-                                <td className="border p-2">{user.contactNo}</td>
-                                <td className="border p-2">{user.whatsappNo}</td>
-                                <td className="border p-2">{user.maritalStatus}</td>
-                                <td className="border p-2">{formatDate(user.marriageDate)}</td>
-                                <td className="border p-2">{user.email}</td>
-                                <td className="border p-2">{user.education}</td>
-                                <td className="border p-2">{user.occupation}</td>
-                                <td className="border p-2">{user.companyName}</td>
-                                <td className="border p-2">{user.designation}</td>
-                                <td className="border p-2">{user.monthlyIncome}</td>
-                                <td className="border p-2">{user.helpDarjiSamaj}</td>
-                                <td className="border p-2">
-                                    <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-                                        onClick={() => navigate(`/family-members/${user._id}`)}>
-                                        View Family Members
-                                    </button>
-                                    {userRole === 'admin' && (
-                                        <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
-                                            onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
-                                    )}
-                                    {userRole === 'admin' && (
-                                        <button className="bg-red-500 text-white px-2 py-1 rounded"
-                                            onClick={() => handleDelete(user._id)}>Delete</button>
-                                    )}
+                        {users.length === 0 ? (
+                            <tr>
+                                <td colSpan="16" className="border p-4 text-center text-gray-500">
+                                    No family members found.
                                 </td>
                             </tr>
-                        ))}
+                        ) : (
+                            users.map(user => (
+                                <tr key={user._id} className="text-center border-b">
+                                    <td className="border p-2">
+                                        {user.passportPhoto ? (
+                                            <img
+                                                src={`data:image/png;base64,${user.passportPhoto}`}
+                                                alt="Passport"
+                                                className="w-24 h-24 max-w-none mx-auto border border-gray-300"
+                                            />
+                                        ) : (
+                                            <span>No Photo</span>
+                                        )}
+                                    </td>
+                                    <td className="border p-2">{user.name} {user.middleName} {user.surname}</td>
+                                    <td className="border p-2">{user.sex}</td>
+                                    <td className="border p-2">{formatDate(user.birthday)}</td>
+                                    <td className="border p-2">{user.bloodGroup}</td>
+                                    <td className="border p-2">{user.nativePlace}</td>
+                                    <td className="border p-2">{user.totalMembers}</td>
+                                    <td className="border p-2">
+                                        {user.address ? (
+                                            `${user.address.houseNo || ''} ${user.address.society || ''} ${user.address.landmark || ''} 
+                                    ${user.address.area || ''} ${user.address.taluka || ''} ${user.address.district || ''} ${user.address.pincode || ''}`
+                                        ) : "N/A"}
+                                    </td>
+                                    <td className="border p-2">{user.contactNo}</td>
+                                    <td className="border p-2">{user.whatsappNo}</td>
+                                    <td className="border p-2">{user.maritalStatus}</td>
+                                    <td className="border p-2">{formatDate(user.marriageDate)}</td>
+                                    <td className="border p-2">{user.email}</td>
+                                    <td className="border p-2">{user.education}</td>
+                                    <td className="border p-2">{user.occupation}</td>
+                                    <td className="border p-2">{user.companyName}</td>
+                                    <td className="border p-2">{user.designation}</td>
+                                    <td className="border p-2">{user.yearlyIncome}</td>
+                                    <td className="border p-2">{user.helpDarjiSamaj}</td>
+                                    <td className="border p-2">
+                                        <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
+                                            onClick={() => navigate(`/family-members/${user._id}`)}>
+                                            View Family Members
+                                        </button>
+                                        {(userRole === 'admin' || userRole === 'superadmin') && (
+                                            <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
+                                                onClick={() => navigate(`/edit-user/${user._id}`)}>Edit</button>
+                                        )}
+                                        {(userRole === 'superadmin') && (
+                                            <button className="bg-red-500 text-white px-2 py-1 rounded"
+                                                onClick={() => handleDelete(user._id)}>Delete</button>
+                                        )}
+                                    </td>
+                                    {userRole === 'superadmin' && (
+                                        <td className="border p-2">{user.createdBy?.name || 'N/A'}</td>
+                                    )}
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

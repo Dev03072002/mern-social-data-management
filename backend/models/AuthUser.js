@@ -14,9 +14,13 @@ const AuthUserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ['admin', 'normal'],
+    enum: ['admin', 'normal', 'superadmin'],
     required: true,
     default: 'normal'
+  },
+  name: {
+    type: String,
+    required: [true, "Name is required"],
   },
   createdAt: {
     type: Date,

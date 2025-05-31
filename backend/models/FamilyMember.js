@@ -16,7 +16,7 @@ const familyMemberSchema = new mongoose.Schema({
     occupation: String,
     companyName: String,
     designation: String,
-    monthlyIncome: Number,
+    yearlyIncome: Number,
     passportPhoto: String,
     helpDarjiSamaj: String,
 }, { timestamps: true });

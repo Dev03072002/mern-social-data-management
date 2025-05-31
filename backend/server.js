@@ -5,7 +5,7 @@ const { MongoClient } = require('mongodb');
 const mongoose = require("mongoose");
 const path = require('path');
 
-const authRoutes = require("./routes/authRoutes");
+const authModule = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const familyRoutes = require("./routes/FamilyMemberRoutes");
 const daughterDetailsRoutes = require("./routes/MarriedDaughterRoutes");
@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI, { autoSelectFamily: false })
 .catch(err => console.error("MongoDB Connection Error:", err));
 
 // Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authModule.router);
 app.use("/api/users", userRoutes);
 app.use("/api/family", familyRoutes, daughterDetailsRoutes, daughterFamilyRoutes);
 

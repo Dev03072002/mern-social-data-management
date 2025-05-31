@@ -81,9 +81,9 @@ const UserList = ({ userRole }) => {
                             <th className="border p-2">Occupation</th>
                             <th className="border p-2">Name of the Company</th>
                             <th className="border p-2">Designation</th>
-                            <th className="border p-2">Monthly Income in INR (In Lacs)</th>
+                            <th className="border p-2">Yearly Income in INR (In Lacs)</th>
                             <th className="border p-2">Ways to Help Darji Samaj</th>
-                            {userRole === 'admin' && (
+                            {(userRole === 'admin' || userRole === 'superadmin') && (
                                 <th className="border p-2">Actions</th>
                             )}
                         </tr>
@@ -121,14 +121,14 @@ const UserList = ({ userRole }) => {
                                     <td className="border p-2">{user.occupation}</td>
                                     <td className="border p-2">{user.companyName}</td>
                                     <td className="border p-2">{user.designation}</td>
-                                    <td className="border p-2">{user.monthlyIncome}</td>
+                                    <td className="border p-2">{user.yearlyIncome}</td>
                                     <td className="border p-2">{user.helpDarjiSamaj}</td>
                                     <td className="border p-2">
-                                        {userRole === 'admin' && (
+                                        {(userRole === 'admin' || userRole === 'superadmin') && (
                                             <button className="bg-green-500 text-white px-2 py-1 rounded mr-2"
                                                 onClick={() => navigate(`/edit-family-member/${user._id}`)}>Edit</button>
                                         )}
-                                        {userRole === 'admin' && (
+                                        {(userRole === 'superadmin') && (
                                             <button className="bg-red-500 text-white px-2 py-1 rounded"
                                                 onClick={() => handleDelete(user._id)}>Delete</button>
                                         )}
@@ -139,7 +139,7 @@ const UserList = ({ userRole }) => {
                     </tbody>
                 </table>
             </div>
-            {userRole === 'admin' && (
+            {(userRole === 'admin' || userRole === 'superadmin') && (
                 <button
                     type="button"
                     onClick={handleAddNewForm}

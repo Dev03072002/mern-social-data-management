@@ -27,7 +27,7 @@ const marriedDaughterSchema = new mongoose.Schema({
     occupation: String,
     companyName: String,
     designation: String,
-    monthlyIncome: Number,
+    yearlyIncome: Number,
     passportPhoto: String,
     helpDarjiSamaj: String,
     familyMembers: [{ type: mongoose.Schema.Types.ObjectId, ref: "DaughterFamilyMember" }],

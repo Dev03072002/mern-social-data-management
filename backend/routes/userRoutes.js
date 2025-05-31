@@ -2,6 +2,7 @@ const express = require("express");
 const multer = require("multer");
 const User = require("../models/User");
 const FamilyMember = require("../models/FamilyMember");
+const { protect, adminOnly, adminOrSuperAdminOnly } = require("./authRoutes");
 
 const router = express.Router();
 
@@ -10,7 +11,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // POST route to save user details
-router.post("/register", upload.single("passportPhoto"), async (req, res) => {
+router.post("/register", protect, adminOrSuperAdminOnly, upload.single("passportPhoto"), async (req, res) => {
     try {
         const userData = { ...req.body };
 
@@ -24,6 +25,10 @@ router.post("/register", upload.single("passportPhoto"), async (req, res) => {
             userData.passportPhoto = req.file.buffer.toString("base64");
         }
 
+        if (req.user && req.user.id && (req.user.role === 'admin' || req.user.role === 'superadmin')) {
+            userData.createdBy = req.user.id;
+        }
+
         const newUser = new User(userData);
         await newUser.save();
         res.status(201).json({ success: true, message: "User registered successfully", userId: newUser._id });
@@ -34,9 +39,15 @@ router.post("/register", upload.single("passportPhoto"), async (req, res) => {
 });
 
 // POST route to get all users details
-router.get("/list-main-members", async (req, res) => {
+router.get("/list-main-members", protect, async (req, res) => {
     try {
-        const users = await User.find({});
+        let query = {};
+
+        if (req.user && req.user.role === 'admin') {
+            query.createdBy = req.user.id;
+        }
+
+        const users = await User.find(query).populate('createdBy', 'name');
         res.json(users);
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -45,7 +56,7 @@ router.get("/list-main-members", async (req, res) => {
 });
 
 // Get route to fetch single user
-router.get("/:id", async (req, res) => {
+router.get("/:id", protect, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: "User not found" });
@@ -57,7 +68,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // Put route to edit a single user
-router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
+router.put("/:id", protect, adminOrSuperAdminOnly, upload.single("passportPhoto"), async (req, res) => {
     try {
         // Fetch the existing user first to preserve existing familyMembers
         const existingUser = await User.findById(req.params.id);
@@ -84,6 +95,10 @@ router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
         updatedData.familyMembers = existingUser.familyMembers;
         updatedData.marriedDaughters = existingUser.marriedDaughters;
 
+        if (existingUser.createdBy) {
+            updatedData.createdBy = existingUser.createdBy;
+        }
+
         const updatedUser = await User.findByIdAndUpdate(req.params.id, updatedData, { new: true });
         
         res.json({ success: true, message: "User updated successfully", userId: updatedUser._id });
@@ -94,7 +109,7 @@ router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
 });
 
 // Delete route to delete a single user
-router.delete("/delete/:id", async (req, res) => {
+router.delete("/delete/:id", protect, adminOrSuperAdminOnly, async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: "User not found" });
