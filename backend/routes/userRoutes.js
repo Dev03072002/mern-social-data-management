@@ -42,13 +42,20 @@ router.post("/register", protect, adminOrSuperAdminOnly, upload.single("passport
 router.get("/list-main-members", protect, async (req, res) => {
     try {
         let query = {};
-
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+        
         if (req.user && req.user.role === 'admin') {
             query.createdBy = req.user.id;
         }
 
-        const users = await User.find(query).populate('createdBy', 'name');
-        res.json(users);
+        const totalUsers = await User.countDocuments(query);
+        const users = await User.find(query)
+            .skip(skip)
+            .limit(limit)
+            .populate('createdBy', 'name');
+        res.json({users, totalUsers, page, totalPages: Math.ceil(totalUsers / limit)});
     } catch (error) {
         console.error("Error fetching users:", error);
         res.status(500).json({ message: "Server Error" });

@@ -4,14 +4,24 @@ import { useNavigate } from "react-router-dom";
 
 const UserList = ({ userRole }) => {
     const [users, setUsers] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const limit = 10;
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/api/users/list-main-members`)
-            .then(response => setUsers(response.data))
-            .catch(error => console.error("Error fetching users:", error));
-    }, []);
+        setLoading(true);
+        axios.get(`${API_BASE_URL}/api/users/list-main-members?page=${currentPage}&limit=${limit}`)
+            .then(response => {
+                setUsers(response.data.users);
+                setTotalPages(response.data.totalPages);
+                setCurrentPage(response.data.page);
+            })
+            .catch(error => console.error("Error fetching users:", error))
+            .finally(() => setLoading(false));
+    }, [currentPage]);
 
     const formatDate = (dateString) => {
         if (!dateString) return "N/A";
@@ -76,7 +86,13 @@ const UserList = ({ userRole }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.length === 0 ? (
+                        {loading ? (
+                            <tr>
+                                <td colSpan="21" className="text-center py-6 text-blue-600 font-semibold">
+                                    Loading...
+                                </td>
+                            </tr>
+                        ) : users.length === 0 ? (
                             <tr>
                                 <td colSpan="16" className="border p-4 text-center text-gray-500">
                                     No family members found.
@@ -142,6 +158,39 @@ const UserList = ({ userRole }) => {
                     </tbody>
                 </table>
             </div>
+            <div className="flex justify-center mt-6 space-x-2">
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className="px-3 py-1 rounded border border-gray-400 hover:bg-gray-100 disabled:opacity-50"
+                >
+                    Prev
+                </button>
+
+                {[...Array(totalPages)].map((_, index) => {
+                    const page = index + 1;
+                    return (
+                        <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`px-3 py-1 rounded border border-gray-400 ${
+                                page === currentPage ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+                            }`}
+                        >
+                            {page}
+                        </button>
+                    );
+                })}
+
+                <button
+                    onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className="px-3 py-1 rounded border border-gray-400 hover:bg-gray-100 disabled:opacity-50"
+                >
+                    Next
+                </button>
+            </div>
+
         </div>
     );
 };

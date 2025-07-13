@@ -162,8 +162,8 @@ const UserForm = ({ initialData = null, userId = null }) => {
                     </div>
 
                     <div>
-                        <label className="form-label">Blood Group <RequiredAsterisk /> </label>
-                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field" required>
+                        <label className="form-label">Blood Group </label>
+                        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} className="input-field">
                             <option value="">Select</option>
                             <option value="A+">A+</option>
                             <option value="A-">A-</option>
