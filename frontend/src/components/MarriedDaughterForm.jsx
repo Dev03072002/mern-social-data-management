@@ -216,6 +216,8 @@ const MarriedDaughterForm = () => {
                             <option value="Salaried">Salaried</option>
                             <option value="House Wife">House Wife</option>
                             <option value="Student">Student</option>
+                            <option value="CA">CA</option>
+                            <option value="Retired">Retired</option>
                         </select>
                     </div>
 
