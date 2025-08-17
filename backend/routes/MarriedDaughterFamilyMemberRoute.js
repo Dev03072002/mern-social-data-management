@@ -8,7 +8,8 @@ const DaughterFamilyMember = require("../models/DaughterFamilyMember");
 const router = express.Router();
 
 // Multer setup for file uploads (Passport Photo)
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const { storage } = require("../config/cloudinary");
 const upload = multer({ storage });
 
 router.post("/add-daughter-family-member", upload.single("passportPhoto"), async (req, res) => {
@@ -22,8 +23,8 @@ router.post("/add-daughter-family-member", upload.single("passportPhoto"), async
         }
 
         // Convert passport photo to Base64 (For simplicity)
-        if (req.file) {
-            familyData.passportPhoto = req.file.buffer.toString("base64");
+        if (req.file && req.file.path) {
+            familyData.passportPhoto = req.file.path;
         }
 
         // Create a new family member

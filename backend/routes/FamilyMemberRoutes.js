@@ -6,7 +6,8 @@ const User = require("../models/User");
 const router = express.Router();
 
 // Multer setup for file uploads (Passport Photo)
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const { storage } = require("../config/cloudinary");
 const upload = multer({ storage });
 
 router.post("/add-family-member", upload.single("passportPhoto"), async (req, res) => {
@@ -20,8 +21,8 @@ router.post("/add-family-member", upload.single("passportPhoto"), async (req, re
         }
 
         // Convert passport photo to Base64 (For simplicity)
-        if (req.file) {
-            familyData.passportPhoto = req.file.buffer.toString("base64");
+        if (req.file && req.file.path) {
+            userData.passportPhoto = req.file.path;
         }
 
         // Create a new family member
@@ -41,8 +42,18 @@ router.post("/add-family-member", upload.single("passportPhoto"), async (req, re
 
 router.get("/family-members/:id", async (req, res) => {
     try {
-        const familyMembers = await FamilyMember.find({ mainMemberId: req.params.id });
-        res.json(familyMembers);
+        const page = parseInt(req.query.page) || 1;
+        const limit = parseInt(req.query.limit) || 10;
+        const skip = (page - 1) * limit;
+
+        const filter = { mainMemberId: req.params.id };
+
+        const totalUsers = await FamilyMember.countDocuments(filter);
+        const familyMembers = await FamilyMember.find(filter)
+            .skip(skip)
+            .limit(limit)
+            .lean();
+        res.json({familyMembers, totalUsers, page, totalPages: Math.ceil(totalUsers / limit)});
     } catch (error) {
         console.error("Error fetching family members:", error);
         res.status(500).json({ message: "Server Error" });
@@ -71,8 +82,8 @@ router.put("/:id", upload.single("passportPhoto"), async (req, res) => {
         let updatedData = { ...req.body };       
 
         // Convert passport photo if provided
-        if (req.file) {
-            updatedData.passportPhoto = req.file.buffer.toString("base64");
+        if (req.file && req.file.path) {
+            updatedData.passportPhoto = req.file.path;
         }
 
         // Preserve existing familyMembers if not explicitly updated
@@ -98,6 +109,12 @@ router.delete("/delete/:id", async (req, res) => {
             { familyMembers: id },
             { $pull: { familyMembers: id } }
         );
+        
+        if (familyMember.passportPhoto) {
+            // Extract public_id from Cloudinary URL
+            const publicId = familyMember.passportPhoto.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(`passport_photos/${publicId}`);
+        }
 
         await FamilyMember.findByIdAndDelete(id);
 

@@ -1,18 +1,34 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import axios from "axios";
 
 const UserList = ({ userRole }) => {
     const [users, setUsers] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(false);
+    const limit = 10;
     const { id } = useParams();
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
 
+    const [searchParams, setSearchParams] = useSearchParams();
+    const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+    const parentPage = searchParams.get("parentPage") || "1";
+    const [currentPage, setCurrentPage] = useState(pageFromUrl);
+
     useEffect(() => {
-        axios.get(`${API_BASE_URL}/api/family/family-members/${id}`)
-            .then(response => setUsers(response.data))
-            .catch(error => console.error("Error fetching users:", error));
-    }, []);
+        setLoading(true);
+        axios.get(`${API_BASE_URL}/api/family/family-members/${id}?page=${currentPage}&limit=${limit}`)
+            .then(response => {
+                setUsers(response.data.familyMembers);
+                setTotalPages(response.data.totalPages);
+                setCurrentPage(response.data.page);
+            })
+            .catch(error => console.error("Error fetching users:", error))
+            .finally(() => setLoading(false));
+
+        setSearchParams({ page: currentPage, parentPage });
+    }, [currentPage]);
 
     const formatDate = (dateString) => {
         if (!dateString) return "N/A";
@@ -42,7 +58,7 @@ const UserList = ({ userRole }) => {
     }
 
     const handleGoBack = () => {
-        navigate("/user-list");
+        navigate(`/user-list?page=${parentPage}`);
     };
 
     return (
@@ -89,7 +105,13 @@ const UserList = ({ userRole }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {users.length === 0 ? (
+                        {loading ? (
+                            <tr>
+                                <td colSpan="21" className="text-center py-6 text-blue-600 font-semibold">
+                                    Loading...
+                                </td>
+                            </tr>
+                        ) : users.length === 0 ? (
                             <tr>
                                 <td colSpan="16" className="border p-4 text-center text-gray-500">
                                     No family members found.
@@ -102,7 +124,7 @@ const UserList = ({ userRole }) => {
                                     <td className="border p-2">
                                         {user.passportPhoto ? (
                                             <img
-                                                src={`data:image/png;base64,${user.passportPhoto}`}
+                                                src={user.passportPhoto}
                                                 alt="Passport"
                                                 className="w-24 h-24 max-w-none mx-auto border border-gray-300"
                                             />
@@ -139,6 +161,39 @@ const UserList = ({ userRole }) => {
                     </tbody>
                 </table>
             </div>
+            {totalPages > 1 && (
+                <div className="flex justify-center mt-6 space-x-2">
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className="px-3 py-1 rounded border border-gray-400 hover:bg-gray-100 disabled:opacity-50"
+                    >
+                        Prev
+                    </button>
+
+                    {[...Array(totalPages)].map((_, index) => {
+                        const page = index + 1;
+                        return (
+                            <button
+                                key={page}
+                                onClick={() => setCurrentPage(page)}
+                                className={`px-3 py-1 rounded border border-gray-400 ${page === currentPage ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+                                    }`}
+                            >
+                                {page}
+                            </button>
+                        );
+                    })}
+
+                    <button
+                        onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+                        disabled={currentPage === totalPages}
+                        className="px-3 py-1 rounded border border-gray-400 hover:bg-gray-100 disabled:opacity-50"
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
             {(userRole === 'admin' || userRole === 'superadmin') && (
                 <button
                     type="button"

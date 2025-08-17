@@ -7,7 +7,8 @@ const { protect, adminOnly, adminOrSuperAdminOnly } = require("./authRoutes");
 const router = express.Router();
 
 // Multer setup for file uploads (Passport Photo)
-const storage = multer.memoryStorage();
+// const storage = multer.memoryStorage();
+const { storage } = require("../config/cloudinary");
 const upload = multer({ storage });
 
 // POST route to save user details
@@ -21,8 +22,8 @@ router.post("/register", protect, adminOrSuperAdminOnly, upload.single("passport
         }
 
         // Convert passport photo to Base64 (For simplicity)
-        if (req.file) {
-            userData.passportPhoto = req.file.buffer.toString("base64");
+        if (req.file && req.file.path) {
+            userData.passportPhoto = req.file.path;
         }
 
         if (req.user && req.user.id && (req.user.role === 'admin' || req.user.role === 'superadmin')) {
@@ -51,9 +52,10 @@ router.get("/list-main-members", protect, async (req, res) => {
         }
 
         const totalUsers = await User.countDocuments(query);
-        const users = await User.find(query)
+        const users = await User.find(query)  
             .skip(skip)
             .limit(limit)
+            .lean()
             .populate('createdBy', 'name');
         res.json({users, totalUsers, page, totalPages: Math.ceil(totalUsers / limit)});
     } catch (error) {
@@ -94,8 +96,8 @@ router.put("/:id", protect, adminOrSuperAdminOnly, upload.single("passportPhoto"
         }        
 
         // Convert passport photo if provided
-        if (req.file) {
-            updatedData.passportPhoto = req.file.buffer.toString("base64");
+        if (req.file && req.file.path) {
+            updatedData.passportPhoto = req.file.path;
         }
 
         // Preserve existing familyMembers if not explicitly updated
@@ -120,6 +122,12 @@ router.delete("/delete/:id", protect, adminOrSuperAdminOnly, async (req, res) =>
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: "User not found" });
+
+        if (user.passportPhoto) {
+            // Extract public_id from Cloudinary URL
+            const publicId = user.passportPhoto.split("/").pop().split(".")[0];
+            await cloudinary.uploader.destroy(`passport_photos/${publicId}`);
+        }
 
         await FamilyMember.deleteMany({ _id: { $in: user.familyMembers } });
 

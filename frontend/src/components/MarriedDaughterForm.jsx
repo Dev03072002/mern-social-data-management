@@ -238,6 +238,13 @@ const MarriedDaughterForm = () => {
 
                     <div>
                         <label className="form-label">Upload Photo <RequiredAsterisk /> </label>
+                        {formData.passportPhoto && typeof formData.passportPhoto === "string" ? (
+                            <img 
+                                src={formData.passportPhoto} 
+                                alt="Current Passport" 
+                                className="w-24 h-24 border border-gray-300"
+                            />
+                        ) : null}
                         <input type="file" name="passportPhoto" onChange={handleChange} className="input-field" accept="image/*" />
                     </div>
 

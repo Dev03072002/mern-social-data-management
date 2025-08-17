@@ -263,7 +263,7 @@ const FamilyMemberForm = ({ initialData = null, familyMemberId = null }) => {
                         <label className="form-label">Upload Photo <RequiredAsterisk /> </label>
                         {formData.passportPhoto && typeof formData.passportPhoto === "string" ? (
                             <img 
-                                src={`data:image/png;base64,${formData.passportPhoto}`} 
+                                src={formData.passportPhoto} 
                                 alt="Current Passport" 
                                 className="w-24 h-24 border border-gray-300"
                             />

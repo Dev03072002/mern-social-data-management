@@ -38,6 +38,7 @@ frontend/dist/
 # Ignore backend dependencies
 backend/node_modules/
 backend/build/
+backend/users-backup.json
 
 # OS-specific files
 .DS_Store

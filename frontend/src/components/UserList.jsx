@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const UserList = ({ userRole }) => {
     const [users, setUsers] = useState([]);
     const [totalPages, setTotalPages] = useState(1);
-    const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
     const limit = 10;
     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
+
+    const pageFromUrl = parseInt(searchParams.get("page") || "1", 10);
+    const [currentPage, setCurrentPage] = useState(pageFromUrl);
 
     useEffect(() => {
         setLoading(true);
@@ -21,6 +24,8 @@ const UserList = ({ userRole }) => {
             })
             .catch(error => console.error("Error fetching users:", error))
             .finally(() => setLoading(false));
+
+        setSearchParams({ page: currentPage });
     }, [currentPage]);
 
     const formatDate = (dateString) => {
@@ -104,7 +109,7 @@ const UserList = ({ userRole }) => {
                                     <td className="border p-2">
                                         {user.passportPhoto ? (
                                             <img
-                                                src={`data:image/png;base64,${user.passportPhoto}`}
+                                                src={user.passportPhoto}
                                                 alt="Passport"
                                                 className="w-24 h-24 max-w-none mx-auto border border-gray-300"
                                             />
@@ -137,7 +142,7 @@ const UserList = ({ userRole }) => {
                                     <td className="border p-2">{user.helpDarjiSamaj}</td>
                                     <td className="border p-2">
                                         <button className="bg-blue-500 text-white px-2 py-1 rounded mr-2"
-                                            onClick={() => navigate(`/family-members/${user._id}`)}>
+                                            onClick={() => navigate(`/family-members/${user._id}?parentPage=${currentPage}`)}>
                                             View Family Members
                                         </button>
                                         {(userRole === 'admin' || userRole === 'superadmin') && (
