@@ -22,7 +22,7 @@ router.post("/add-family-member", upload.single("passportPhoto"), async (req, re
 
         // Convert passport photo to Base64 (For simplicity)
         if (req.file && req.file.path) {
-            userData.passportPhoto = req.file.path;
+            familyData.passportPhoto = req.file.path;
         }
 
         // Create a new family member
